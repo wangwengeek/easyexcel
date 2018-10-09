@@ -273,11 +273,9 @@ public class SaxAnalyserV07 extends BaseSaxAnalyser {
                     String str = pre + new String(ch, start, length);
                     sharedStringList.remove(sharedStringList.size() - 1);
                     sharedStringList.add(str);
-
-                    System.err.println("1"+","+str);
+                    flag = false;
                 }else  if ("t".equals(currentQName) && ("si".equals(beforeQName))){
-                    String str = new String(ch, start, length);
-                    sharedStringList.add(str);
+                    sharedStringList.add(new String(ch, start, length));
                     flag = false;
                 }
                 // lastHandledElementPosition++;
