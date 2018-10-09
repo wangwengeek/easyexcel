@@ -232,6 +232,9 @@ public class SaxAnalyserV07 extends BaseSaxAnalyser {
 
             String currentQName = "";
 
+            int index = 0;
+
+            boolean flag = false;
             @Override
             public void startElement(String uri, String localName, String qName, Attributes attributes) {
                 //if (hasSkippedEmptySharedString()) {
@@ -243,8 +246,14 @@ public class SaxAnalyserV07 extends BaseSaxAnalyser {
                 if ("si".equals(qName) || "t".equals(qName)) {
                     beforeQName = currentQName;
                     currentQName = qName;
+                    if ("t".equals(currentQName)){
+                        if (flag == true){
+                            sharedStringList.add(null);
+                        }
+                        flag = true;
+                    }
                 }
-
+                index ++;
             }
             //@Override
             //public void endElement (String uri, String localName, String qName)
@@ -267,10 +276,14 @@ public class SaxAnalyserV07 extends BaseSaxAnalyser {
                     String str = pre + new String(ch, start, length);
                     sharedStringList.remove(sharedStringList.size() - 1);
                     sharedStringList.add(str);
+
+                    System.err.println("1"+","+str);
                 }else  if ("t".equals(currentQName) && ("si".equals(beforeQName))){
-                    sharedStringList.add(new String(ch, start, length));
+                    String str = new String(ch, start, length);
+                    sharedStringList.add(str);
+                    flag = false;
                 }
-               // lastHandledElementPosition++;
+                // lastHandledElementPosition++;
 
 
             }
