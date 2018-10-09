@@ -232,8 +232,6 @@ public class SaxAnalyserV07 extends BaseSaxAnalyser {
 
             String currentQName = "";
 
-            int index = 0;
-
             boolean flag = false;
             @Override
             public void startElement(String uri, String localName, String qName, Attributes attributes) {
@@ -246,14 +244,13 @@ public class SaxAnalyserV07 extends BaseSaxAnalyser {
                 if ("si".equals(qName) || "t".equals(qName)) {
                     beforeQName = currentQName;
                     currentQName = qName;
-                    if ("t".equals(currentQName)){
+                    if ("t".equals(currentQName)&& "si".equals(beforeQName)){
                         if (flag == true){
                             sharedStringList.add(null);
                         }
                         flag = true;
                     }
                 }
-                index ++;
             }
             //@Override
             //public void endElement (String uri, String localName, String qName)
