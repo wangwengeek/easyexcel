@@ -2,8 +2,14 @@ package com.alibaba.excel.write;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.List;
 
+import com.alibaba.excel.annotation.ExcelColumnNum;
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.util.TypeUtil;
 import com.alibaba.excel.write.context.GenerateContext;
 import com.alibaba.excel.write.context.GenerateContextImpl;
 import com.alibaba.excel.metadata.ExcelColumnProperty;
@@ -13,6 +19,7 @@ import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.util.EasyExcelTempFile;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -84,7 +91,23 @@ public class ExcelBuilderImpl implements ExcelBuilder {
             cell.setCellStyle(context.getCurrentContentStyle());
             String cellValue = null;
             try {
-                cellValue = BeanUtils.getProperty(oneRowData, excelHeadProperty.getField().getName());
+                Class<?> type = excelHeadProperty.getField().getType();
+                if (Date.class.equals(type)){
+                    ExcelProperty excelProperty = excelHeadProperty.getField().getAnnotation(ExcelProperty.class);
+                    ExcelColumnNum excelColumnNum = excelHeadProperty.getField().getAnnotation(ExcelColumnNum.class);
+                    String format = null;
+                    if (excelProperty != null){
+                        format = excelProperty.format();
+                    }else if (excelColumnNum != null){
+                        format = excelColumnNum.format();
+                    }else {
+                        format = "yyyy-MM-dd HH:mm:ss";
+                    }
+                    Date nestedProperty = (Date)BeanUtilsBean.getInstance().getPropertyUtils().getNestedProperty(oneRowData, excelHeadProperty.getField().getName());
+                    cellValue = TypeUtil.fromadDateToString(nestedProperty,format);
+                }else {
+                    cellValue = BeanUtils.getProperty(oneRowData, excelHeadProperty.getField().getName());
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

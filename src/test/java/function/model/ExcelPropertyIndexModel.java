@@ -3,6 +3,9 @@ package function.model;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author jipengfei
  * @date 2017/05/31
@@ -29,6 +32,9 @@ public class ExcelPropertyIndexModel extends BaseRowModel {
 
     @ExcelProperty(value = "备注",index = 6)
     private String last;
+
+    @ExcelProperty(value = "时间",index = 7,format = "yyyy-MM-dd")
+    private Date date;
 
     public String getName() {
         return name;
@@ -84,5 +90,13 @@ public class ExcelPropertyIndexModel extends BaseRowModel {
 
     public void setLast(String last) {
         this.last = last;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

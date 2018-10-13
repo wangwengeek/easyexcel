@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.excel.ExcelWriter;
@@ -26,7 +27,7 @@ public class ExcelWriteIndexTest {
 
     @Test
     public void test1() throws FileNotFoundException {
-        OutputStream out = new FileOutputStream("/Users/jipengfei/78.xlsx");
+        OutputStream out = new FileOutputStream("D:\\workspace\\idea-workspace\\easyexcel\\src\\test\\resources\\78.xlsx");
         try {
             ExcelWriter writer = new ExcelWriter(out, ExcelTypeEnum.XLSX);
             //写第一个sheet, sheet1  数据全是List<String> 无模型映射关系
@@ -71,6 +72,7 @@ public class ExcelWriteIndexTest {
         model.setEmail("7827323@qq.com");
         model.setSax("男");
         model.setHeigh("1123");
+        model.setDate(new Date());
         datas.add(model);
         return datas;
     }

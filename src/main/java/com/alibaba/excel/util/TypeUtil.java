@@ -2,11 +2,10 @@ package com.alibaba.excel.util;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +17,14 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
  * @author jipengfei
  */
 public class TypeUtil {
+
+
+    static ThreadLocal<Map<String, DateFormat>> SAFE_SDF = new ThreadLocal<Map<String, DateFormat>>(){
+        @Override
+        protected Map<String, DateFormat> initialValue() {
+            return new HashMap<String, DateFormat>();
+        }
+    };
 
     private static List<SimpleDateFormat> DATE_FORMAT_LIST = new ArrayList<SimpleDateFormat>(4);
 
@@ -137,5 +144,12 @@ public class TypeUtil {
         return true;
     }
 
-
+    public static String fromadDateToString(Date date,String format){
+        if (SAFE_SDF.get().get(format) == null){
+            SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+            SAFE_SDF.get().put(format,dateFormat);
+        }
+        String str = SAFE_SDF.get().get(format).format(date);
+        return str;
+    }
 }
