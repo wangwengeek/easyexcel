@@ -144,7 +144,10 @@ public class TypeUtil {
         return true;
     }
 
-    public static String fromadDateToString(Date date,String format){
+    public static String fromatDateToString(Date date,String format){
+        if (date == null){
+            return "";
+        }
         if (SAFE_SDF.get().get(format) == null){
             SimpleDateFormat dateFormat = new SimpleDateFormat(format);
             SAFE_SDF.get().put(format,dateFormat);

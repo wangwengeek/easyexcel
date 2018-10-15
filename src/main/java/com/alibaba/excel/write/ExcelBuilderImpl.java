@@ -104,7 +104,7 @@ public class ExcelBuilderImpl implements ExcelBuilder {
                         format = "yyyy-MM-dd HH:mm:ss";
                     }
                     Date nestedProperty = (Date)BeanUtilsBean.getInstance().getPropertyUtils().getNestedProperty(oneRowData, excelHeadProperty.getField().getName());
-                    cellValue = TypeUtil.fromadDateToString(nestedProperty,format);
+                    cellValue = TypeUtil.fromatDateToString(nestedProperty,format);
                 }else {
                     cellValue = BeanUtils.getProperty(oneRowData, excelHeadProperty.getField().getName());
                 }
